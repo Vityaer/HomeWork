@@ -1,0 +1,45 @@
+var
+  i,j, n,k: integer;
+  CurScore, ScoreTemp: int64;
+  CurName, NameTemp: string;
+  Score: array [1..4] of integer;// массив счетов
+  Name: array [1..4] of string;// массив имен
+  flag: boolean;// переменная для определения повторений имен
+  
+begin
+  Readln(n); // считываем кол-во записей
+  for k := 1 to n do// цикл на все записи
+  begin
+    Readln(CurScore, CurName);// считываем текущий счет и имя
+    CurName := Trim(CurName);// удаляем пробелы слева и справа от имени
+    flag := false;
+    Score[4] := 0;// обеуляем переменные 
+    Name[4]  := '';
+    for i:=1 to 3 do
+    if ((Name[i] = CurName)and(Score[i] < CurScore)) then// сравниваем текущее имя с уже имеющимися и меняем счет, если текущий больше
+    begin
+      Score[i]:= CurScore;
+      flag := true;// если такое имя уже было
+    end;
+    if not(flag) then // если нет такого имени в призах, то ставим его на 4 место
+    begin
+      Score[4] := CurScore;
+      Name[4]  := CurName;
+    end;
+    
+    for i:=3 downto 1 do// сортируем данные начиная с 3 места
+      for j:=i+1 to 4 do
+        if(Score[i] < Score[j]) then
+        begin
+          ScoreTemp := Score[j];
+          NameTemp := Name[j];
+          Score[j]:= Score[i];
+          Name[j]:= Name[i];// обмен данных
+          Score[i]:= ScoreTemp;
+          Name[i]:= NameTemp;
+        end;
+  end;
+writeln();
+for i:=1 to 3 do
+  writeln(Name[i],' ', Score[i]); // вывод первых 3 мест
+end.
