@@ -1,0 +1,50 @@
+using System;
+public class Program{	
+	public static void Main(){
+		
+  		int n;// кол-во записей
+		int CurScore, ScoreTemp; // текущий счет и переменная для обмена местами
+  		string CurName, NameTemp;// текущее имя и переменная для обмена
+  		int[] Score = new int[4];// массив первых 4 мест(хранится счёт)
+  		string[] Name = new string[4];//массив первых 4 имен
+  		bool flag;//переменная для опредления повторений имени
+		
+		n =  Convert.ToInt32(Console.ReadLine());//считываем кол-во записей
+		for(int k = 0; k<n; k++){// запускаем цикл на все записи
+			string[] Parametrs = Console.ReadLine().Split();//считываем новую строку и делим по пробелам
+			CurScore = Convert.ToInt32(Parametrs[0]);//первый элемент является числом
+			CurName = Parametrs[1];// второй элемент имя игрока
+			
+			flag = false;// обнуляем переменные
+			Score[3] = 0;
+			Name[3] = "";
+			
+			for(int i=0; i<3; i++){//сравниваем текущее имя с уже имеющимися
+				if ((Name[i] == CurName)&&(Score[i] < CurScore)){
+					Score[i] = CurScore;
+    			    flag = true;// если уже есть такое имя в призовых местах, то flag станет true
+				}
+    		}
+			if (!flag){// если нет такого имени то добавляем его на 4(по порядку) место 
+				Score[3] = CurScore;
+      			Name[3]  = CurName;
+			}
+			for (int i=2;i>=0; i--){// цикл на сортировку записей по счету, начиная сравнивать с 3 места
+				for(int j=i+1; j<4; j++){
+					if(Score[i] < Score[j]){
+          				ScoreTemp = Score[j];
+          				NameTemp = Name[j];
+          				Score[j]= Score[i];
+          				Name[j]= Name[i];//    обмен данных на местах
+          				Score[i]= ScoreTemp;
+          				Name[i] = NameTemp;
+					}
+				}
+			}
+		}
+		Console.WriteLine();
+		for(int i=0; i<3; i++){
+			Console.WriteLine("{0} {1}", Name[i], Score[i]);// выводим первые 3 места
+		}	
+	}
+}
